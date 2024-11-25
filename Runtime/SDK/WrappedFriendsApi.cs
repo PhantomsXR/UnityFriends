@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Services.Core.Telemetry.Internal;
 using System.Net;
+using Unity.Services.Core;
 
 // Friends
 using Unity.Services.Friends.Exceptions;
@@ -70,7 +71,10 @@ namespace Unity.Services.Friends
         /// Configuration to access the Friends APIs
         /// </summary>
         internal static Configuration s_Configuration =
-            new Configuration("https://social.services.api.unity.com", 10, 4, null);
+            new Configuration(
+                CheckRegion.IsChina
+                    ? "https://xgs.phantomsxr.com"
+                    : "https://social.services.api.unity.com", 10, 4, null);
 
         /// <summary>
         /// Error when the ID argument is invalid.
@@ -153,7 +157,7 @@ namespace Unity.Services.Friends
             if (!disposing)
                 return;
 
-            Task.Run(async() =>
+            Task.Run(async () =>
             {
                 try
                 {
@@ -195,7 +199,7 @@ namespace Unity.Services.Friends
             var memberIdentity = new MemberIdentity(id: memberId, role: Role.TARGET);
             var relationshipRequestParam = new AddRelationshipRequestParam(
                 EnumParseHelper.ToInternalRelationshipType(relationshipType),
-                new List<MemberIdentity> { memberIdentity });
+                new List<MemberIdentity> {memberIdentity});
             var response = await TryCatchRequest(RelationshipsApiNames.CreateRelationship,
                 m_RelationshipsApi.CreateRelationshipAsync,
                 new CreateRelationshipRequest(memberOptions.IncludePresence, memberOptions.IncludeProfile,
@@ -217,7 +221,7 @@ namespace Unity.Services.Friends
             var memberIdentity = new MemberIdentity(profileName: name, role: Role.TARGET);
             var relationshipRequestParam = new AddRelationshipRequestParam(
                 EnumParseHelper.ToInternalRelationshipType(RelationshipType.Friend),
-                new List<MemberIdentity> { memberIdentity });
+                new List<MemberIdentity> {memberIdentity});
             var response = await TryCatchRequest(RelationshipsApiNames.CreateRelationship,
                 m_RelationshipsApi.CreateRelationshipAsync,
                 new CreateRelationshipRequest(memberOptions.IncludePresence, memberOptions.IncludeProfile,
@@ -234,7 +238,7 @@ namespace Unity.Services.Friends
                 throw new ArgumentException(k_IdValidationError, nameof(relationshipId));
             }
 
-            await TryCatchRequest(RelationshipsApiNames.DeleteRelationship, async(r, c) =>
+            await TryCatchRequest(RelationshipsApiNames.DeleteRelationship, async (r, c) =>
             {
                 var result = await m_RelationshipsApi.DeleteRelationshipAsync(r, c);
                 // Generated SDK code does not return a Response<T> object, adding one in wrapper with default values to match required signature
@@ -264,7 +268,7 @@ namespace Unity.Services.Friends
                 m_NotificationApi.GetNotificationsAuthAsync,
                 new GetNotificationsAuthRequest());
 
-            return new ChannelToken { ChannelName = response.Result.Channel, Token = response.Result.Token };
+            return new ChannelToken {ChannelName = response.Result.Channel, Token = response.Result.Token};
         }
 
         ///<inheritdoc cref="IFriendsApi.SubscribeToEventsAsync"/>
@@ -284,14 +288,14 @@ namespace Unity.Services.Friends
                 throw new ArgumentException(k_IdValidationError, nameof(targetUserId));
             }
 
-            await TryCatchRequest(MessagingApiNames.Message, async(r, c) =>
-            {
-                var result = await m_MessagingApi.MessageAsync(r, c);
-                return new Response<bool>(
-                    new HttpClientResponse(null, result.Status, false, false, null, string.Empty),
-                    true
-                );
-            },
+            await TryCatchRequest(MessagingApiNames.Message, async (r, c) =>
+                {
+                    var result = await m_MessagingApi.MessageAsync(r, c);
+                    return new Response<bool>(
+                        new HttpClientResponse(null, result.Status, false, false, null, string.Empty),
+                        true
+                    );
+                },
                 new Unity.Services.Friends.Internal.Generated.Messaging.MessageRequest(
                     new MessageRequest(targetUserId, message)));
         }
@@ -327,7 +331,7 @@ namespace Unity.Services.Friends
             if (memberOptions.IncludeProfile && internalMember.Profile != null)
             {
                 relationship.Member.Profile =
-                    new Profile { Name = internalMember.Profile.Name };
+                    new Profile {Name = internalMember.Profile.Name};
             }
 
             return relationship;
@@ -347,11 +351,11 @@ namespace Unity.Services.Friends
             }
             catch (HttpException<Error> he)
             {
-                ResolveErrorWrapping((HttpStatusCode)he.ActualError.Status, he);
+                ResolveErrorWrapping((HttpStatusCode) he.ActualError.Status, he);
             }
             catch (HttpException he)
             {
-                ResolveErrorWrapping((HttpStatusCode)he.Response.StatusCode, he);
+                ResolveErrorWrapping((HttpStatusCode) he.Response.StatusCode, he);
             }
             catch (Exception e)
             {
@@ -367,10 +371,11 @@ namespace Unity.Services.Friends
         {
             if (statusCode == HttpStatusCode.InternalServerError)
             {
-                throw new FriendsServiceException(HttpStatusCode.InternalServerError, "Something went wrong.", exception);
+                throw new FriendsServiceException(HttpStatusCode.InternalServerError, "Something went wrong.",
+                    exception);
             }
 
-            if ((int)statusCode >= 400 && (int)statusCode < 500 &&
+            if ((int) statusCode >= 400 && (int) statusCode < 500 &&
                 exception is HttpException<Error> fourHundredException)
             {
                 throw new FriendsServiceException(statusCode,
@@ -380,7 +385,8 @@ namespace Unity.Services.Friends
 
             if (exception is HttpException<Error> apiException)
             {
-                throw new FriendsServiceException((HttpStatusCode)apiException.ActualError.Status, apiException.ActualError.Title, apiException);
+                throw new FriendsServiceException((HttpStatusCode) apiException.ActualError.Status,
+                    apiException.ActualError.Title, apiException);
             }
 
             throw new FriendsServiceException(statusCode, exception != null ? exception.Message : "", exception);

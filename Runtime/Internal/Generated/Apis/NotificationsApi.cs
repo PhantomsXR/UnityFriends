@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Unity.Services.Friends.Internal.Generated.Models;
 using Unity.Services.Friends.Internal.Generated.Http;
 using Unity.Services.Authentication.Internal;
+using Unity.Services.Core;
 using Unity.Services.Friends.Internal.Generated.Notifications;
 
 namespace Unity.Services.Friends.Internal.Generated.Apis.Notifications
@@ -52,7 +53,8 @@ namespace Unity.Services.Friends.Internal.Generated.Apis.Notifications
                 // We return a merge between the current configuration and the
                 // global configuration to ensure we have the correct
                 // combination of headers and a base path (if it is set).
-                Configuration globalConfiguration = new Configuration("https://social.services.api.unity.com", 10, 4, null);
+                Configuration globalConfiguration = new Configuration(CheckRegion.IsChina
+                    ? "https://xgs.phantomsxr.com":"https://social.services.api.unity.com", 10, 4, null);
                 if (FriendsService.Instance != null)
                 {
                     globalConfiguration = FriendsService.Instance.Configuration;

@@ -17,6 +17,7 @@ using Unity.Services.Friends.Internal.Generated.Apis.Relationships;
 using Unity.Services.Friends.Internal.Generated.Http;
 using Unity.Services.Core.Internal;
 using Unity.Services.Authentication.Internal;
+using Unity.Services.Core;
 
 namespace Unity.Services.Friends.Internal.Generated
 {
@@ -70,7 +71,9 @@ namespace Unity.Services.Friends.Internal.Generated
             
             RelationshipsApi = new RelationshipsApiClient(httpClient, accessToken);
             
-            var baseUrl = "https://social.services.api.unity.com";
+            var baseUrl = CheckRegion.IsChina 
+                ? "https://xgs.phantomsxr.com"
+                : "https://social.services.api.unity.com";
             Configuration = new Configuration(baseUrl, 10, 4, null);
         }
         

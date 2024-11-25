@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Authentication.Internal;
+using Unity.Services.Core;
 using Unity.Services.Core.Configuration.Internal;
 using Unity.Services.Core.Internal;
 using Unity.Services.Core.Telemetry.Internal;
@@ -77,17 +78,13 @@ namespace Unity.Services.Friends
             switch (cloudEnvironment)
             {
                 case k_StagingEnvironment:
-#if LOCATION_CHINA
-                    return "https://xgs-stg.phantomsxr.com";
-#else
-                    return "https://social-stg.services.api.unity.com";
-#endif
+                    return CheckRegion.IsChina
+                        ? "https://xgs-stg.phantomsxr.com"
+                        : "https://social-stg.services.api.unity.com";
                 default:
-#if LOCATION_CHINA
-                    return "https://xgs.phantomsxr.com";
-#else
-                    return "https://social.services.api.unity.com";
-#endif
+                    return CheckRegion.IsChina
+                        ? "https://xgs.phantomsxr.com"
+                        : "https://social.services.api.unity.com";
             }
         }
     }
