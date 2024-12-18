@@ -17,6 +17,7 @@ namespace Unity.Services.Friends
     public interface IFriendsService : IMessagingService
     {
         public event System.Action<Notifications.IMessageReceivedEvent> MessageReceived;
+        public event System.Action<Notifications.INotificationsStateChangedEvent> NotificationsConnectivityChanged;
         public event System.Action<Notifications.IPresenceUpdatedEvent> PresenceUpdated;
         public event System.Action<Notifications.IRelationshipAddedEvent> RelationshipAdded;
         public event System.Action<Notifications.IRelationshipDeletedEvent> RelationshipDeleted;
@@ -261,6 +262,11 @@ namespace Unity.Services.Friends.Notifications
     {
         public string UserId { get; }
         public T GetAs<T>() where T : new();
+    }
+
+    public interface INotificationsStateChangedEvent
+    {
+        public FriendsEventConnectionState State { get; }
     }
 
     public interface IPresenceUpdatedEvent

@@ -7,9 +7,9 @@ namespace Unity.Services.Friends.Notifications
     public interface IMessageReceivedEvent
     {
         /// <summary>
-        /// Getter for the identifier of the member whose presence got updated.
+        /// Getter for the identifier of the member who sent the message.
         /// </summary>
-        /// <returns>The identifier of the member whose presence got updated.</returns>
+        /// <returns>The identifier of the member who sent the message.</returns>
         public string UserId { get; }
 
         /// <summary>

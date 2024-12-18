@@ -5,6 +5,21 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2024-07-11
+
+### Added
+
+- Add a new event that surfaces the state of the friends notification system.
+    - Allows for developers to detect a loss of connection to the live notification system.
+
+### Changed
+
+- Updated dependency of com.unity.services.wire to 1.2.6
+
+### Fixed
+
+- Fixed an issue where the notification system would fail to reconnect silently.
+
 ## [1.0.1] - 2024-04-30
 * Added apple privacy manifest
 * Updated com.unity.services.core to 1.12.5

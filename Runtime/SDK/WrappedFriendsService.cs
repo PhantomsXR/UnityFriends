@@ -24,6 +24,9 @@ namespace Unity.Services.Friends
 
         public event Action<IMessageReceivedEvent> MessageReceived;
 
+        public event Action<INotificationsStateChangedEvent> NotificationsConnectivityChanged;
+
+
         public IReadOnlyList<Relationship> Relationships
         {
             get
@@ -147,7 +150,7 @@ namespace Unity.Services.Friends
 
             m_Relationships.Add(relationship);
 
-            return relationship;;
+            return relationship;
         }
 
         ///<inheritdoc cref="IFriendsService.AddBlockAsync"/>
@@ -293,10 +296,7 @@ namespace Unity.Services.Friends
                 var callbacks = new FriendsEventCallbacks();
                 callbacks.FriendsEventConnectionStateChanged += (e) =>
                 {
-                    if (e != FriendsEventConnectionState.Subscribed)
-                    {
-                        //ToDo What are we gonna do in this case???
-                    }
+                    NotificationsConnectivityChanged?.Invoke(new NotificationStateChangedEvent(e));
                 };
                 callbacks.RelationshipAdded += (e) =>
                 {

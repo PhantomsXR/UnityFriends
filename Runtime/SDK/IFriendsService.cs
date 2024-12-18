@@ -189,5 +189,10 @@ namespace Unity.Services.Friends
         /// Event called when a message is received.
         /// </summary>
         public event Action<IMessageReceivedEvent> MessageReceived;
+
+        /// <summary>
+        /// Event called when a the connectivity to the friends notification system has changed.
+        /// </summary>
+        public event Action<INotificationsStateChangedEvent> NotificationsConnectivityChanged;
     }
 }

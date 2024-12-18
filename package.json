@@ -1,7 +1,7 @@
 {
   "name": "com.unity.services.friends",
   "displayName": "Friends",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "unity": "2020.3",
   "_upm": {
     "gameService": {
@@ -9,7 +9,7 @@
       "projectDashboardUrl": "https://dashboard.unity3d.com/organizations/{0}/projects/{1}/environments/default/friends/overview",
       "projectDashboardUrlType": "OrganizationKeyAndProjectGuid"
     },
-    "changelog": "* Added apple privacy manifest\n* Updated com.unity.services.core to 1.12.5\n* Updated com.unity.services.authentication to 2.7.4\n* Updated com.unity.services.wire to 1.2.5"
+    "changelog": "### Added\n\n- Add a new event that surfaces the state of the friends notification system.\n    - Allows for developers to detect a loss of connection to the live notification system.\n\n### Changed\n\n- Updated dependency of com.unity.services.wire to 1.2.6\n\n### Fixed\n\n- Fixed an issue where the notification system would fail to reconnect silently."
   },
   "description": "The Friends service allows you to boost player engagement by providing players with a social system that works well with other Unity services. With Friends, your players can send and receive friend requests, build and manage friends lists, and block and unblock other players.",
   "dependencies": {
@@ -21,19 +21,20 @@
     "com.unity.modules.unitywebrequestwww": "1.0.0",
     "com.unity.nuget.newtonsoft-json": "3.0.2",
     "com.unity.services.authentication": "2.7.4",
-    "com.unity.services.wire": "1.2.5"
+    "com.unity.services.wire": "1.2.6"
   },
   "type": "library",
   "hideInEditor": true,
   "relatedPackages": {
-    "com.unity.services.friends.tests": "1.0.1"
+    "com.unity.services.friends.tests": "1.1.0"
   },
   "upmCi": {
-    "footprint": "c38fe429924df4e7d4f4a566f8377d33d06e0d07"
+    "footprint": "10f1e20e37c85c55ef2cd25c04de986afbae0aaa"
   },
   "repository": {
     "url": "https://github.cds.internal.unity3d.com/unity/operate-services-sdk.git",
     "type": "git",
-    "revision": "3dfc8db8608ba6032cb2b8e32ce90030054b50d2"
-  }
+    "revision": "b494958143a0a6c8f586e9cea6121838c84dda6b"
+  },
+  "_fingerprint": "21d36d998164c1c7cf2f28e4980fd541d6640eaa"
 }
