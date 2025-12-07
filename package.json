@@ -1,7 +1,7 @@
 {
   "name": "com.unity.services.friends",
   "displayName": "Friends",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "unity": "2020.3",
   "_upm": {
     "gameService": {
@@ -36,5 +36,5 @@
     "type": "git",
     "revision": "b494958143a0a6c8f586e9cea6121838c84dda6b"
   },
-  "_fingerprint": "21d36d998164c1c7cf2f28e4980fd541d6640eaa"
+  "_fingerprint": "1e7c5a43f1526aad8bbe8ec5f80afe80dd4534c0"
 }
